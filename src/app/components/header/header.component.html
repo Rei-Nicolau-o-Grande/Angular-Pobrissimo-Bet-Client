@@ -4,16 +4,16 @@
       <div>
         <a href="/" class="text-white text-xl font-bold">Probissimo Bet</a>
       </div>
-      <div>
+      <div class="md:w-auto">
         <button
           class="text-white p-2 px-4"
-          (click)="sendEventFormAuth(false)"
+          (click)="handleOpenModal(false)"
           >
           Criar Conta
         </button>
         <button
           class="text-white p-2 px-4"
-          (click)="sendEventFormAuth(true)"
+          (click)="handleOpenModal(true)"
           >
           Login
         </button>

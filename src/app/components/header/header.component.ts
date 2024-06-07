@@ -27,7 +27,6 @@ export class HeaderComponent {
 
   public sendEventFormAuth(event: boolean): void {
     this.eventFormAuth.emit(event);
-    this.handleOpenModal(event);
   }
 
 }

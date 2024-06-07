@@ -1,104 +1,88 @@
 <!-- form login -->
 <section *ngIf="formLoginOrCreateUser">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-6">
-        <div class="form-login">
-          <p class="text-xl font-semibold text-center my-4">Login</p>
-          <form [formGroup]="formLogin" (ngSubmit)="onSubmitLoginForm()">
+  <p class="text-xl font-semibold text-center my-4">Login</p>
+  <form [formGroup]="formLogin" (ngSubmit)="onSubmitLoginForm()">
 
-            <mat-form-field class="w-full">
-              <mat-label>Email</mat-label>
-              <input matInput placeholder="Email" formControlName="email">
-              @if (formLogin.get('email')) {
-                <mat-error>Email Inválido</mat-error>
-              }
-            </mat-form-field>
+    <mat-form-field class="w-full">
+      <mat-label>Email</mat-label>
+      <input matInput placeholder="Email" formControlName="email">
+      @if (formLogin.get('email')) {
+        <mat-error>Email Inválido</mat-error>
+      }
+    </mat-form-field>
 
-            <mat-form-field class="w-full">
-              <mat-label>Senha</mat-label>
-              <input matInput type="password" placeholder="Senha" formControlName="password">
-              @if (formLogin.get('password')) {
-                <mat-error>Senha Inválida</mat-error>
-              }
-            </mat-form-field>
+    <mat-form-field class="w-full">
+      <mat-label>Senha</mat-label>
+      <input matInput type="password" placeholder="Senha" formControlName="password">
+      @if (formLogin.get('password')) {
+        <mat-error>Senha Inválida</mat-error>
+      }
+    </mat-form-field>
 
-            <div class="flex justify-end">
-              <button
-                type="button"
-                class="rounded-full bg-sky-500 hover:bg-sky-700 px-4 py-2 mx-4 my-4"
-                (click)="changeFormLoginOrCreateUser()"
-                >
-                  Criar Conta
-                </button>
-              <button
-                type="submit"
-                class="rounded-full bg-green-500 hover:bg-green-700 px-4 py-2 mx-4 my-4"
-                >
-                  Login
-                </button>
-            </div>
-
-          </form>
-        </div>
-      </div>
+    <div class="flex justify-end">
+      <button
+        type="button"
+        class="rounded-full bg-sky-500 hover:bg-sky-700 px-4 py-2 mx-4 my-4"
+        (click)="changeFormLoginOrCreateUser()"
+        >
+          Criar Conta
+        </button>
+      <button
+        type="submit"
+        class="rounded-full bg-green-500 hover:bg-green-700 px-4 py-2 mx-4 my-4"
+        >
+          Login
+        </button>
     </div>
-  </div>
+
+  </form>
+
 </section>
 
 
 <!-- form create user -->
 <section *ngIf="!formLoginOrCreateUser">
-  <div class="container">
-    <div class="row">
-      <div class="col-md-6">
-        <div class="form-login">
-          <p class="text-xl font-semibold text-center my-4">Criar Conta</p>
-          <form [formGroup]="formCreateUser" (ngSubmit)="onSubmitCreateUserForm()">
+  <p class="text-xl font-semibold text-center my-4">Criar Conta</p>
+  <form [formGroup]="formCreateUser" (ngSubmit)="onSubmitCreateUserForm()">
 
-            <mat-form-field class="w-full">
-              <mat-label>Usuário</mat-label>
-              <input matInput placeholder="Usuário" formControlName="userName">
-              @if (formCreateUser.get('userName')) {
-                <mat-error>Usuário Inválido</mat-error>
-              }
-            </mat-form-field>
+    <mat-form-field class="w-full">
+      <mat-label>Usuário</mat-label>
+      <input matInput placeholder="Usuário" formControlName="userName">
+      @if (formCreateUser.get('userName')) {
+        <mat-error>Usuário Inválido</mat-error>
+      }
+    </mat-form-field>
 
-            <mat-form-field class="w-full">
-              <mat-label>Email</mat-label>
-              <input matInput placeholder="Email" formControlName="email">
-              @if (formCreateUser.get('email')) {
-                <mat-error>Email Inválido</mat-error>
-              }
-            </mat-form-field>
+    <mat-form-field class="w-full">
+      <mat-label>Email</mat-label>
+      <input matInput placeholder="Email" formControlName="email">
+      @if (formCreateUser.get('email')) {
+        <mat-error>Email Inválido</mat-error>
+      }
+    </mat-form-field>
 
-            <mat-form-field class="w-full">
-              <mat-label>Senha</mat-label>
-              <input matInput type="password" placeholder="Senha" formControlName="password">
-              @if (formCreateUser.get('password')) {
-                <mat-error>Senha Inválido</mat-error>
-              }
-            </mat-form-field>
+    <mat-form-field class="w-full">
+      <mat-label>Senha</mat-label>
+      <input matInput type="password" placeholder="Senha" formControlName="password">
+      @if (formCreateUser.get('password')) {
+        <mat-error>Senha Inválido</mat-error>
+      }
+    </mat-form-field>
 
-            <div class="flex justify-end">
-              <button
-                type="submit"
-                class="rounded-full bg-green-500 hover:bg-green-700 px-4 py-2 mx-4 my-4"
-                >
-                  Criar Conta
-                </button>
-              <button
-                type="button"
-                class="rounded-full bg-sky-500 hover:bg-sky-700 px-4 py-2 mx-4 my-4"
-                (click)="changeFormLoginOrCreateUser()"
-                >
-                  Login
-              </button>
-            </div>
-
-          </form>
-        </div>
-      </div>
+    <div class="flex justify-end">
+      <button
+        type="submit"
+        class="rounded-full bg-green-500 hover:bg-green-700 px-4 py-2 mx-4 my-4"
+        >
+          Criar Conta
+        </button>
+      <button
+        type="button"
+        class="rounded-full bg-sky-500 hover:bg-sky-700 px-4 py-2 mx-4 my-4"
+        (click)="changeFormLoginOrCreateUser()"
+        >
+          Login
+      </button>
     </div>
-  </div>
+  </form>
 </section>

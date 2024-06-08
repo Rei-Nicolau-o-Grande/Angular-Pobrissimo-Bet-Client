@@ -1,24 +1,35 @@
 <header>
   <div class="bg-gray-900 p-4">
     <div class="container mx-auto flex justify-between items-center">
-      <div>
-        <a href="/" class="text-white text-xl font-bold">Probissimo Bet</a>
+      <div class="flex md:justify-center items-center">
+        <a href="/" class="text-white text-xl font-bold md:text-center">Probissimo Bet</a>
       </div>
-      <div class="md:w-auto">
-        <button
-          class="text-white p-2 px-4"
-          (click)="handleOpenModal(false)"
-          >
+      <div class="hidden md:flex space-x-4">
+        <button class="text-white p-2 px-4" (click)="handleOpenModal(false)">
           Criar Conta
         </button>
-        <button
-          type="button"
-          class="rounded-lg bg-indigo-500 text-white p-2 px-4"
-          (click)="handleOpenModal(true)"
-          >
+        <button type="button" class="rounded-lg bg-indigo-500 text-white p-2 px-4" (click)="handleOpenModal(true)">
           Login
         </button>
       </div>
+      <div class="md:hidden">
+        <button (click)="toggleMenu()" class="text-white p-2 focus:outline-none">
+          <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
+            <mat-icon>account_circle</mat-icon>
+          </button>
+        </button>
+      </div>
     </div>
+  </div>
+
+  <!-- Menu dropdown para telas menores -->
+  <div [ngClass]="{'block': isMenuOpen, 'hidden': !isMenuOpen}" class="md:hidden bg-gray-900 p-4">
+    <button class="text-white w-full text-left p-2 px-4" (click)="handleOpenModal(false)">
+      Criar Conta
+    </button>
+    <button type="button" class="rounded-lg bg-indigo-500 text-white w-full text-left p-2 px-4 mt-2"
+      (click)="handleOpenModal(true)">
+      Login
+    </button>
   </div>
 </header>

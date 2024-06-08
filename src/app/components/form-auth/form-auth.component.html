@@ -13,7 +13,11 @@
 
     <mat-form-field class="w-full">
       <mat-label>Senha</mat-label>
-      <input matInput type="password" placeholder="Senha" formControlName="password">
+      <input matInput [type]="hide ? 'password' : 'text'" placeholder="Senha" formControlName="password">
+      <button mat-icon-button matSuffix (click)="clickEvent($event)" [attr.aria-label]="'Hide password'"
+        [attr.aria-pressed]="hide" class="mr-2" type="button">
+        <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+      </button>
       @if (formLogin.get('password')) {
         <mat-error>Senha Inválida</mat-error>
       }
@@ -63,7 +67,11 @@
 
     <mat-form-field class="w-full">
       <mat-label>Senha</mat-label>
-      <input matInput type="password" placeholder="Senha" formControlName="password">
+      <input matInput [type]="hide ? 'password' : 'text'" placeholder="Senha" formControlName="password">
+      <button mat-icon-button matSuffix (click)="clickEvent($event)" [attr.aria-label]="'Hide password'"
+        [attr.aria-pressed]="hide" class="mr-2" type="button">
+        <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+      </button>
       @if (formCreateUser.get('password')) {
         <mat-error>Senha Inválido</mat-error>
       }

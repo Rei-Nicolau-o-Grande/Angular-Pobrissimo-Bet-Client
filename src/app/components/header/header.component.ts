@@ -1,5 +1,5 @@
 import { Component, EventEmitter, inject, Output } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router, RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { FormAuthComponent } from '../form-auth/form-auth.component';
@@ -18,17 +18,26 @@ import { CookieService } from 'ngx-cookie-service';
     MatDialogModule,
     CommonModule,
     MatMenuModule,
-    MatTooltipModule
+    MatTooltipModule, RouterModule
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
 export class HeaderComponent {
   private dialogService = inject(MatDialog);
+
   @Output() eventFormAuth: any = new EventEmitter();
+  @Output() toggleSidenav = new EventEmitter<void>();
+
+  onClick() {
+    console.log('click hearder component');
+    this.toggleSidenav.emit();
+  }
+
   private loginService = inject(LoginService);
   private cookieService = inject(CookieService);
   private router = inject(Router);
+
   public isUserMenuOpen: boolean = false;
 
 
@@ -57,10 +66,15 @@ export class HeaderComponent {
     return this.loginService.isLoggedIn();
   }
 
+  refresh(): void {
+    window.location.reload();
+  }
+
   public logout(): void {
     this.cookieService.delete("access_token");
     alert("Você saiu da sua conta!")
     this.router.navigate(['/']);
+    this.refresh();
   }
 
 }

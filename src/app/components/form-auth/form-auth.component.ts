@@ -74,6 +74,7 @@ export class FormAuthComponent implements OnInit, OnDestroy {
           this.router.navigate(['/']);
 
           alert("Logado com sucesso!");
+          this.refresh();
         }, error: (error) => {
           alert(error.error.message);
         }
@@ -100,6 +101,10 @@ export class FormAuthComponent implements OnInit, OnDestroy {
     this.formLoginOrCreateUser = $event;
     console.log($event);
   }
+
+  refresh(): void {
+    window.location.reload();
+}
 
   ngOnDestroy(): void {
     this.destroy$.next();

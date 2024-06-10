@@ -1,35 +1,77 @@
 <header>
   <div class="bg-gray-900 p-4">
     <div class="container mx-auto flex justify-between items-center">
-      <div class="flex md:justify-center items-center">
-        <a href="/" class="text-white text-xl font-bold md:text-center">Probissimo Bet</a>
+      <div class="flex justify-center items-center w-full">
+        <a href="/" class="text-white text-xl font-bold text-center">Probissimo Bet</a>
       </div>
-      <div class="hidden md:flex space-x-4">
-        <button class="text-white p-2 px-4" (click)="handleOpenModal(false)">
+
+      <!-- Seção para telas maiores -->
+      <div class="hidden md:flex space-x-4" *ngIf="!verifyUserIsLogged()">
+        <button class="text-white py-2 px-4" (click)="handleOpenModal(false)">
           Criar Conta
         </button>
-        <button type="button" class="rounded-lg bg-indigo-500 text-white p-2 px-4" (click)="handleOpenModal(true)">
+        <button type="button" class="rounded-lg bg-indigo-500 text-white py-2 px-4" (click)="handleOpenModal(true)">
           Login
         </button>
       </div>
-      <div class="md:hidden">
-        <button (click)="toggleMenu()" class="text-white p-2 focus:outline-none">
-          <button mat-icon-button class="example-icon" aria-label="Example icon-button with menu icon">
-            <mat-icon>account_circle</mat-icon>
-          </button>
-        </button>
-      </div>
-    </div>
-  </div>
 
-  <!-- Menu dropdown para telas menores -->
-  <div [ngClass]="{'block': isMenuOpen, 'hidden': !isMenuOpen}" class="md:hidden bg-gray-900 p-4">
-    <button class="text-white w-full text-left p-2 px-4" (click)="handleOpenModal(false)">
-      Criar Conta
-    </button>
-    <button type="button" class="rounded-lg bg-indigo-500 text-white w-full text-left p-2 px-4 mt-2"
-      (click)="handleOpenModal(true)">
-      Login
-    </button>
+      <!-- Seção para telas menores -->
+      <div class="flex md:hidden space-x-4" *ngIf="!verifyUserIsLogged()">
+        <button mat-button [matMenuTriggerFor]="beforeMenu">
+          <mat-icon class="text-white hover:text-gray-500 focus:outline-none flex items-center">
+            menu
+          </mat-icon>
+        </button>
+        <mat-menu #beforeMenu="matMenu" xPosition="before">
+          <button mat-menu-item (click)="handleOpenModal(false)">Criar Conta</button>
+          <button mat-menu-item (click)="handleOpenModal(true)">Login</button>
+        </mat-menu>
+      </div>
+
+      <!-- Seção para usuário logado - Telas maiores -->
+      <div class="hidden md:flex space-x-4" *ngIf="verifyUserIsLogged()">
+        <div class="relative flex items-center space-x-2">
+          <button class="text-white hover:text-gray-500 focus:outline-none flex items-center">
+            <mat-icon>payments</mat-icon>
+          </button>
+          <p matTooltip="Dinheiro total" class="font-bold text-white hover:text-gray-500 py-2 pr-2">$10</p>
+          <button mat-button [matMenuTriggerFor]="beforeMenu">
+            <mat-icon class="text-white hover:text-gray-500 focus:outline-none flex items-center">
+              account_circle
+            </mat-icon>
+          </button>
+          <mat-menu #beforeMenu="matMenu" xPosition="before">
+            <button mat-menu-item>Carteira</button>
+            <button mat-menu-item>Minha Conta</button>
+            <button mat-menu-item [className]="['rounded-lg bg-red-500 text-white w-full text-left py-2 px-4 mt-2']"
+              (click)="logout()">
+              Sair
+            </button>
+          </mat-menu>
+        </div>
+      </div>
+
+      <!-- Seção para usuário logado - Telas menores -->
+      <div class="md:hidden flex items-center space-x-2" *ngIf="verifyUserIsLogged()">
+        <button class="text-white hover:text-gray-500 focus:outline-none flex items-center">
+          <mat-icon>payments</mat-icon>
+        </button>
+        <p matTooltip="Dinheiro Total" class="font-bold text-white hover:text-gray-500 py-2 pr-2">$10</p>
+        <button mat-button [matMenuTriggerFor]="beforeMenu">
+          <mat-icon class="text-white hover:text-gray-500 focus:outline-none flex items-center">
+            account_circle
+          </mat-icon>
+        </button>
+        <mat-menu #beforeMenu="matMenu" xPosition="before">
+          <button mat-menu-item>Carteira</button>
+          <button mat-menu-item>Minha Conta</button>
+          <button mat-menu-item [className]="['rounded-lg bg-red-500 text-white w-full text-left py-2 px-4 mt-2']"
+            (click)="logout()">
+            Sair
+          </button>
+        </mat-menu>
+      </div>
+
+    </div>
   </div>
 </header>

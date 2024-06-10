@@ -1,8 +1,14 @@
 import { Component, EventEmitter, inject, Output } from '@angular/core';
+import { Router } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
 import { FormAuthComponent } from '../form-auth/form-auth.component';
 import { CommonModule } from '@angular/common';
+import { LoginService } from '../../services/token/login.service';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { CookieService } from 'ngx-cookie-service';
+
 
 @Component({
   selector: 'app-header',
@@ -10,7 +16,9 @@ import { CommonModule } from '@angular/common';
   imports: [
     MatIconModule,
     MatDialogModule,
-    CommonModule
+    CommonModule,
+    MatMenuModule,
+    MatTooltipModule
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
@@ -18,7 +26,12 @@ import { CommonModule } from '@angular/common';
 export class HeaderComponent {
   private dialogService = inject(MatDialog);
   @Output() eventFormAuth: any = new EventEmitter();
-  public isMenuOpen: boolean = false;
+  private loginService = inject(LoginService);
+  private cookieService = inject(CookieService);
+  private router = inject(Router);
+  public isUserMenuOpen: boolean = false;
+
+
 
   public handleOpenModal(isLoginOrCreateUser: boolean): void {
     this.dialogService.open(FormAuthComponent, {
@@ -28,12 +41,26 @@ export class HeaderComponent {
     });
   }
 
-  toggleMenu(): void {
-    this.isMenuOpen = !this.isMenuOpen;
+  toggleUserMenu(): void {
+    this.isUserMenuOpen = !this.isUserMenuOpen;
+  }
+
+  closeUserMenu(): void {
+    this.isUserMenuOpen = false;
   }
 
   public sendEventFormAuth(event: boolean): void {
     this.eventFormAuth.emit(event);
+  }
+
+  public verifyUserIsLogged(): boolean {
+    return this.loginService.isLoggedIn();
+  }
+
+  public logout(): void {
+    this.cookieService.delete("access_token");
+    alert("Você saiu da sua conta!")
+    this.router.navigate(['/']);
   }
 
 }

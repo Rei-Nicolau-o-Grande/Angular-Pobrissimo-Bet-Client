@@ -6,12 +6,14 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { HeaderComponent } from '../header/header.component';
-import { CommonModule } from '@angular/common';
+import { CommonModule, formatDate } from '@angular/common';
 import { LoginService } from '../../services/token/login.service';
 import { LoginRequest } from '../../model/token/LoginRequest';
 import { Subject, takeUntil } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
+import { UserService } from '../../services/user/user.service';
+import { CreateUserRequest } from '../../model/user/CreateUserRequest';
 
 @Component({
   selector: 'app-form-auth',
@@ -34,6 +36,7 @@ export class FormAuthComponent implements OnInit, OnDestroy {
   private dialogRef = inject(MatDialogRef<HeaderComponent>);
   private matDialogData = inject(MAT_DIALOG_DATA);
   private loginService = inject(LoginService);
+  private userService = inject(UserService);
   private coockieService = inject(CookieService);
   private router = inject(Router);
 
@@ -53,7 +56,7 @@ export class FormAuthComponent implements OnInit, OnDestroy {
   });
 
   public formCreateUser = new FormGroup({
-    userName: new FormControl('', [Validators.required]),
+    username: new FormControl('', [Validators.required]),
     email: new FormControl('', [Validators.required, Validators.email]),
     password: new FormControl('', [Validators.required])
   });
@@ -68,7 +71,8 @@ export class FormAuthComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (response) => {
-          this.coockieService.set('access_token', response?.accessToken, response?.expiresIn);
+          const expirationDate = new Date(response?.expiresIn);
+          this.coockieService.set('access_token', response?.accessToken, expirationDate);
           this.formLogin.reset();
           this.handleCloseModal();
           this.router.navigate(['/']);
@@ -83,8 +87,19 @@ export class FormAuthComponent implements OnInit, OnDestroy {
   }
 
   public onSubmitCreateUserForm(): void {
-
-    this.handleCloseModal();
+    if (this.formCreateUser.valid && this.formCreateUser.value) {
+      this.userService.createUser(this.formCreateUser.value as CreateUserRequest)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (response) => {
+          this.formCreateUser.reset();
+          this.changeFormLoginOrCreateUser();
+          alert("Usuário criado com sucesso!");
+        }, error: (error) => {
+          alert(error.error.message);
+        }
+      });
+    }
   }
 
   public changeFormLoginOrCreateUser(): void {

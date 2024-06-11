@@ -1,5 +1,5 @@
 import { Component, inject, OnDestroy, OnInit } from '@angular/core';
-import { UserMeService } from '../../services/user/user-me.service';
+import { UserService } from '../../services/user/user.service';
 import { Subject, takeUntil } from 'rxjs';
 import { UserMeResponse } from '../../model/user/UserMeResponse';
 import { MatCardModule } from '@angular/material/card';
@@ -17,13 +17,12 @@ import { Router } from '@angular/router';
 export class UserInfoComponent implements OnInit, OnDestroy {
 
   private $destroy: Subject<void> = new Subject<void>();
-  private userMeService = inject(UserMeService);
+  private userService = inject(UserService);
   private router = inject(Router);
   public userMe: UserMeResponse = {} as UserMeResponse;
 
   getUserMe() {
-    this.userMeService.getUserMe(this.userMe)
-      .pipe(takeUntil(this.$destroy))
+    this.userService.getUserMe(this.userMe)
       .subscribe({
         next: (response) => {
           this.userMe.id = response.id;

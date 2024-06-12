@@ -37,7 +37,7 @@ export class UserInfoComponent implements OnInit, OnDestroy {
   public formUpdateUser = new FormGroup({
     username: new FormControl('', [Validators.required]),
     email: new FormControl('', [Validators.required, Validators.email]),
-    password: new FormControl('', [])
+    password: new FormControl('', [Validators.pattern('')])
   });
 
   getUserMe() {
@@ -55,7 +55,7 @@ export class UserInfoComponent implements OnInit, OnDestroy {
           });
         },
         error: (error) => {
-          alert('Error: ' + error.error.message);
+          alert('Error: ' + error.error);
           this.router.navigate(['/']);
         }
       });
@@ -70,7 +70,7 @@ export class UserInfoComponent implements OnInit, OnDestroy {
           alert('Atualizado com sucesso!')
         },
         error: (error) => {
-          alert('Error: ' + error.error.errorFields.email);
+          alert('Error: ' + error.error.message);
         }
       })
     }

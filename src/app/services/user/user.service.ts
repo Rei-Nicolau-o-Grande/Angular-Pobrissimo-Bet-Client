@@ -4,7 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { CookieService } from 'ngx-cookie-service';
 import { UserMeResponse } from '../../model/user/UserMeResponse';
 import { Observable } from 'rxjs';
-import { CreateUserRequest } from '../../model/user/CreateUserRequest';
+import { UserRequest } from '../../model/user/UserRequest';
 
 @Injectable({
   providedIn: 'root'
@@ -30,10 +30,20 @@ export class UserService {
     );
   }
 
-  public createUser(request: CreateUserRequest): Observable<CreateUserRequest> {
-    return this.http.post<CreateUserRequest>(
+  public createUser(request: UserRequest): Observable<UserRequest> {
+    return this.http.post<UserRequest>(
       this.API_URL,
       request
     );
   }
+
+  public updateUser(request: UserRequest, userId: number): Observable<UserRequest> {
+    return this.http.put<UserRequest>(
+      `${this.API_URL}/${userId}`,
+      request,
+      this.HEADERS
+    );
+  }
+
+
 }

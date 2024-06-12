@@ -13,7 +13,7 @@ import { Subject, takeUntil } from 'rxjs';
 import { CookieService } from 'ngx-cookie-service';
 import { Router } from '@angular/router';
 import { UserService } from '../../services/user/user.service';
-import { CreateUserRequest } from '../../model/user/CreateUserRequest';
+import { UserRequest } from '../../model/user/UserRequest';
 
 @Component({
   selector: 'app-form-auth',
@@ -88,7 +88,7 @@ export class FormAuthComponent implements OnInit, OnDestroy {
 
   public onSubmitCreateUserForm(): void {
     if (this.formCreateUser.valid && this.formCreateUser.value) {
-      this.userService.createUser(this.formCreateUser.value as CreateUserRequest)
+      this.userService.createUser(this.formCreateUser.value as UserRequest)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: (response) => {

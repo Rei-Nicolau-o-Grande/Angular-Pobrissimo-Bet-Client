@@ -1,6 +1,43 @@
-<mat-card class="example-card">
+<mat-card class="example-card my-4">
   <mat-card-header>
     <mat-card-title>{{ userMe.username }}</mat-card-title>
     <mat-card-subtitle>{{ userMe.email }}</mat-card-subtitle>
   </mat-card-header>
+</mat-card>
+
+<mat-card class="example-card my-4">
+  <mat-card-content>
+    <section>
+      <p class="text-xl font-semibold text-center my-4">Atualizar Conta</p>
+      <form [formGroup]="formUpdateUser" (ngSubmit)="updateUser()">
+        <mat-form-field class="w-full">
+          <mat-label>Usuário</mat-label>
+          <input matInput placeholder="Usuário" formControlName="username" value="{{ userMe.username }}">
+          <mat-error *ngIf="formUpdateUser.get('username')">Usuário Inválido</mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="w-full">
+          <mat-label>Email</mat-label>
+          <input matInput placeholder="Email" formControlName="email" value="{{ userMe.email }}">
+          <mat-error *ngIf="formUpdateUser.get('email')">Email Inválido</mat-error>
+        </mat-form-field>
+
+        <mat-form-field class="w-full">
+          <mat-label>Senha</mat-label>
+          <input matInput [type]="hide ? 'password' : 'text'" placeholder="Senha" formControlName="password">
+          <button mat-icon-button matSuffix (click)="clickEvent($event)" [attr.aria-label]="'Hide password'"
+            [attr.aria-pressed]="hide" class="mr-2" type="button">
+            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+          <mat-error *ngIf="formUpdateUser.get('password')">Senha Inválido</mat-error>
+        </mat-form-field>
+
+        <div class="flex justify-end">
+          <button type="submit" class="rounded-full bg-green-500 hover:bg-green-700 px-4 py-2 mx-4 my-4">
+            Atualizar
+          </button>
+        </div>
+      </form>
+    </section>
+  </mat-card-content>
 </mat-card>

@@ -6,7 +6,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { HeaderComponent } from '../header/header.component';
-import { CommonModule, formatDate } from '@angular/common';
+import { CommonModule } from '@angular/common';
 import { LoginService } from '../../services/token/login.service';
 import { LoginRequest } from '../../model/token/LoginRequest';
 import { Subject, takeUntil } from 'rxjs';

@@ -14,7 +14,7 @@ export class TransactionService {
   private http = inject(HttpClient);
   private cookieService = inject(CookieService);
 
-  private API_URL = `${environment.api}/api/v1/wallet`;
+  private API_URL = `${environment.api}/api/v1/transactions`;
   private JWT_TOKEN = this.cookieService.get('access_token');
   private HEADERS = {
     headers: new HttpHeaders({
@@ -23,7 +23,7 @@ export class TransactionService {
     }),
   };
 
-  public createTransaction(request: CreateTransaction, walletId: string): Observable<CreateTransaction> {
+  public createTransaction(request: CreateTransaction, walletId: number): Observable<CreateTransaction> {
     return this.http.post<CreateTransaction>(
       `${this.API_URL}/${walletId}`,
       request,

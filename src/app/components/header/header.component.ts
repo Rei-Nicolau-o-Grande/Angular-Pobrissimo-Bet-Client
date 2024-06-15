@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, Output } from '@angular/core';
+import { Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
@@ -8,6 +8,9 @@ import { LoginService } from '../../services/token/login.service';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { CookieService } from 'ngx-cookie-service';
+import { WalletService } from '../../services/wallet/wallet.service';
+import { MyWallet } from '../../model/wallet/MyWallet';
+import { FormTransactionComponent } from '../form-transaction/form-transaction.component';
 
 
 @Component({
@@ -23,7 +26,8 @@ import { CookieService } from 'ngx-cookie-service';
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
-export class HeaderComponent {
+export class HeaderComponent implements OnInit {
+
   private dialogService = inject(MatDialog);
 
   @Output() eventFormAuth: any = new EventEmitter();
@@ -36,10 +40,13 @@ export class HeaderComponent {
 
   private loginService = inject(LoginService);
   private cookieService = inject(CookieService);
+  private walletService = inject(WalletService);
   private router = inject(Router);
+  public myWallet: MyWallet = {} as MyWallet;
 
   public isUserMenuOpen: boolean = false;
 
+  public amountWallet: number = 0;
 
 
   public handleOpenModal(isLoginOrCreateUser: boolean): void {
@@ -48,6 +55,13 @@ export class HeaderComponent {
       height: '400px',
       data: isLoginOrCreateUser
     });
+  }
+
+  public handleOpenModalTransaction(): void {
+    this.dialogService.open(FormTransactionComponent, {
+      width: '700px',
+      height: '400px'
+    })
   }
 
   toggleUserMenu(): void {
@@ -75,6 +89,17 @@ export class HeaderComponent {
     alert("Você saiu da sua conta!")
     this.router.navigate(['/']);
     this.refresh();
+  }
+
+  public getMyWalletAmount(): void {
+    this.walletService.getWallet(this.myWallet)
+    .subscribe( (response) => {
+      this.amountWallet = response.amount;
+    });
+  }
+
+  ngOnInit(): void {
+    this.getMyWalletAmount();
   }
 
 }

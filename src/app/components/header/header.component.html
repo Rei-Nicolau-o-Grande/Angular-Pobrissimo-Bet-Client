@@ -36,10 +36,10 @@
       <!-- Seção para usuário logado - Telas maiores -->
       <div class="hidden md:flex space-x-4" *ngIf="verifyUserIsLogged()">
         <div class="relative flex items-center space-x-2">
-          <button class="text-white hover:text-gray-500 focus:outline-none flex items-center">
+          <button class="text-white hover:text-gray-500 focus:outline-none flex items-center" (click)="handleOpenModalTransaction()">
             <mat-icon>payments</mat-icon>
           </button>
-          <p matTooltip="Dinheiro total" class="font-bold text-white hover:text-gray-500 py-2 pr-2">$10 | currency : 'BRL'</p>
+          <p matTooltip="{{ amountWallet | currency : 'BRL' }}" class="font-bold text-white hover:text-gray-500 py-2 pr-2">{{ amountWallet | currency : 'BRL' }}</p>
           <button mat-button [matMenuTriggerFor]="beforeMenu">
             <mat-icon class="text-white hover:text-gray-500 focus:outline-none flex items-center">
               account_circle
@@ -61,7 +61,7 @@
         <button class="text-white hover:text-gray-500 focus:outline-none flex items-center">
           <mat-icon>payments</mat-icon>
         </button>
-        <p matTooltip="Dinheiro Total" class="font-bold text-white hover:text-gray-500 py-2 pr-2">$10 | currency : 'BRL'</p>
+        <p matTooltip="{{ amountWallet | currency : 'BRL' }}" class="font-bold text-white hover:text-gray-500 py-2 pr-2">{{ amountWallet | currency : 'BRL' }}</p>
         <button mat-button [matMenuTriggerFor]="beforeMenu">
           <mat-icon class="text-white hover:text-gray-500 focus:outline-none flex items-center">
             account_circle

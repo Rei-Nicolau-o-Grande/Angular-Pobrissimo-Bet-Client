@@ -1,3 +1,4 @@
 export interface MyWallet {
-  myWallet: number;
+  id: number
+  amount: number;
 }

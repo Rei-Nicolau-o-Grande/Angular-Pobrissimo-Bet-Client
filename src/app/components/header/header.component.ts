@@ -11,6 +11,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { WalletService } from '../../services/wallet/wallet.service';
 import { MyWallet } from '../../model/wallet/MyWallet';
 import { FormTransactionComponent } from '../form-transaction/form-transaction.component';
+import { WebSocketService } from '../../services/webSocket/web-socket.service';
 
 
 @Component({
@@ -43,6 +44,8 @@ export class HeaderComponent implements OnInit {
   private walletService = inject(WalletService);
   private router = inject(Router);
   public myWallet: MyWallet = {} as MyWallet;
+
+  public webSocketService = inject(WebSocketService);
 
   public isUserMenuOpen: boolean = false;
 
@@ -92,14 +95,21 @@ export class HeaderComponent implements OnInit {
   }
 
   public getMyWalletAmount(): void {
-    this.walletService.getWallet(this.myWallet)
+    this.walletService.getWallet()
     .subscribe( (response) => {
       this.amountWallet = response.amount;
     });
   }
 
+  public getWalletUpdates(): void {
+    this.webSocketService.getWalletUpdates().subscribe((data) => {
+      this.amountWallet = data.amount;
+    });
+  }
+
   ngOnInit(): void {
     this.getMyWalletAmount();
+    // this.getWalletUpdates();
   }
 
 }

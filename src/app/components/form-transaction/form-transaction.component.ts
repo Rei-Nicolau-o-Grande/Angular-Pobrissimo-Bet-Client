@@ -15,6 +15,7 @@ import { CreateTransaction } from '../../model/transaction/CreateTransaction';
 import { UserService } from '../../services/user/user.service';
 import { WalletService } from '../../services/wallet/wallet.service';
 import { MyWallet } from '../../model/wallet/MyWallet';
+import { MatSnackBarModule, MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition, } from '@angular/material/snack-bar';
 
 
 @Component({
@@ -29,21 +30,25 @@ import { MyWallet } from '../../model/wallet/MyWallet';
     MatFormFieldModule,
     MatInputModule,
     MatIconModule,
-    MatSelectModule
+    MatSelectModule,
+    MatSnackBarModule
   ],
   templateUrl: './form-transaction.component.html',
   styleUrl: './form-transaction.component.scss'
 })
 export class FormTransactionComponent implements OnInit {
 
+  private snackBar = inject(MatSnackBar);
   private dialogRef = inject(MatDialogRef<HeaderComponent>);
   private matDialogData = inject(MAT_DIALOG_DATA);
   private cookieService = inject(CookieService);
   private transactionService = inject(TransactionService);
   private userService = inject(UserService);
-  private myWallet = inject(WalletService);
-  private myWalletUserId: number = 0;
+  private walletService = inject(WalletService);
   public myWalletModel: MyWallet = {} as MyWallet;
+
+  horizontalPosition: MatSnackBarHorizontalPosition = 'center';
+  verticalPosition: MatSnackBarVerticalPosition = 'top';
 
 
 
@@ -64,24 +69,42 @@ export class FormTransactionComponent implements OnInit {
     return Object.values(this.typeTransaction) as TypeTransaction[];
   }
 
-  public getWalletId(): void {
-    this.myWallet.getWallet(this.myWalletModel)
+  public getWallet(): void {
+    this.walletService.getWallet()
     .subscribe((response) => {
-      this.myWalletUserId = response.id;
+      this.myWalletModel = response;
     });
   }
 
+  public handleCloseModalTransaction(): void {
+    this.dialogRef.close();
+  }
+
   public onCreatedTransactionSubmit(): void {
-    if (this.formTransaction.valid && this.formTransaction.value) {
-      this.transactionService.createTransaction(this.formTransaction.value as CreateTransaction, this.myWalletUserId)
-        .subscribe(() => {
-          this.dialogRef.close();
-        });
+  if (this.formTransaction.valid && this.formTransaction.value) {
+    this.transactionService.createTransaction(this.formTransaction.value as CreateTransaction, this.myWalletModel.id)
+      .subscribe({
+        next: () => {
+          this.snackBar.open('Transação criada com sucesso', 'Fechar', {
+            duration: 4000,
+            horizontalPosition: this.horizontalPosition,
+            verticalPosition: this.verticalPosition,
+          });
+          this.handleCloseModalTransaction();
+        },
+        error: (error) => {
+          this.snackBar.open(error.error.message, 'Fechar', {
+            duration: 4000,
+            horizontalPosition: this.horizontalPosition,
+            verticalPosition: this.verticalPosition,
+          });
+        }
+      });
     }
   }
 
   ngOnInit(): void {
-    this.getWalletId();
+    this.getWallet();
   }
 
 }

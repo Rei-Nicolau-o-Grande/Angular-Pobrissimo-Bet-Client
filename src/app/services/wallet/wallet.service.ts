@@ -23,7 +23,7 @@ export class WalletService {
     }),
   };
 
-  public getWallet(request: MyWallet): Observable<MyWallet> {
+  public getWallet(): Observable<MyWallet> {
     return this.http.get<MyWallet>(
       `${this.API_URL}/my-wallet`,
       this.HEADERS

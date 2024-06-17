@@ -3,7 +3,7 @@ import { environment } from '../../../environments/environment.development';
 import { CookieService } from 'ngx-cookie-service';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { MyWallet } from '../../model/wallet/MyWallet';
-import { Observable } from 'rxjs';
+import { Observable, Subject } from 'rxjs';
 
 
 @Injectable({
@@ -13,6 +13,10 @@ export class WalletService {
 
   private http = inject(HttpClient);
   private cookieService = inject(CookieService);
+
+  private walletAmountUpdated = new Subject<void>();
+
+  walletAmountUpdated$ = this.walletAmountUpdated.asObservable();
 
   private API_URL = `${environment.api}/api/v1/wallet`;
   private JWT_TOKEN = this.cookieService.get('access_token');
@@ -29,4 +33,9 @@ export class WalletService {
       this.HEADERS
     );
   }
+
+  notifyWalletAmountUpdated() {
+    this.walletAmountUpdated.next();
+  }
+
 }

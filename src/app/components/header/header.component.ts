@@ -1,4 +1,4 @@
-import { Component, EventEmitter, inject, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, inject, OnDestroy, OnInit, Output } from '@angular/core';
 import { Router, RouterModule } from '@angular/router';
 import { MatIconModule } from '@angular/material/icon';
 import { MatDialog, MatDialogModule } from '@angular/material/dialog';
@@ -11,7 +11,7 @@ import { CookieService } from 'ngx-cookie-service';
 import { WalletService } from '../../services/wallet/wallet.service';
 import { MyWallet } from '../../model/wallet/MyWallet';
 import { FormTransactionComponent } from '../form-transaction/form-transaction.component';
-import { WebSocketService } from '../../services/webSocket/web-socket.service';
+import { Subscription } from 'rxjs';
 
 
 @Component({
@@ -27,7 +27,7 @@ import { WebSocketService } from '../../services/webSocket/web-socket.service';
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
-export class HeaderComponent implements OnInit {
+export class HeaderComponent implements OnInit, OnDestroy {
 
   private dialogService = inject(MatDialog);
 
@@ -35,7 +35,6 @@ export class HeaderComponent implements OnInit {
   @Output() toggleSidenav = new EventEmitter<void>();
 
   onClick() {
-    console.log('click hearder component');
     this.toggleSidenav.emit();
   }
 
@@ -45,11 +44,10 @@ export class HeaderComponent implements OnInit {
   private router = inject(Router);
   public myWallet: MyWallet = {} as MyWallet;
 
-  public webSocketService = inject(WebSocketService);
-
   public isUserMenuOpen: boolean = false;
 
   public amountWallet: number = 0;
+  private walletSubscription!: Subscription;
 
 
   public handleOpenModal(isLoginOrCreateUser: boolean): void {
@@ -101,15 +99,18 @@ export class HeaderComponent implements OnInit {
     });
   }
 
-  public getWalletUpdates(): void {
-    this.webSocketService.getWalletUpdates().subscribe((data) => {
-      this.amountWallet = data.amount;
-    });
-  }
-
   ngOnInit(): void {
     this.getMyWalletAmount();
-    // this.getWalletUpdates();
+    this.walletSubscription = this.walletService.walletAmountUpdated$
+      .subscribe( () => {
+        this.getMyWalletAmount();
+      })
+  }
+
+  ngOnDestroy(): void {
+    if (this.walletSubscription) {
+      this.walletSubscription.unsubscribe();
+    }
   }
 
 }

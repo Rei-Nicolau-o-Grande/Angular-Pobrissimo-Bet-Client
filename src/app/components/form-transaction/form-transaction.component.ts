@@ -91,6 +91,7 @@ export class FormTransactionComponent implements OnInit {
             verticalPosition: this.verticalPosition,
           });
           this.handleCloseModalTransaction();
+          this.walletService.notifyWalletAmountUpdated();
         },
         error: (error) => {
           this.snackBar.open(error.error.message, 'Fechar', {
